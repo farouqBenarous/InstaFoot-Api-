@@ -3,27 +3,51 @@ const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
+// Id-User , Email , Username, FullName , Phone_Number , Facebook , Instagrame  , UserPicture ,  Password , Teams[] , FriendList[]
+// email , username ,  fullname , phonenumber ,  facebook , userpicture , friendlist , teams , password
 const userSchema = new mongoose.Schema({
-  name: {
+    email: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        unique: true
+    },
+    username : {
+     type : String,
+     required : true ,
+     minlength: 5,
+     maxlength: 50,
+     unique : true
+
+    } ,
+    fullname: {
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 50
-  },
-  email: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 255,
+    maxlength: 50 ,
     unique: true
   },
-  password: {
+    phonenumber : {
+        type: String,
+        required: true,
+        minlength: 8,
+        maxlength: 14 ,
+        unique : true
+},
+    facebook : { type :  Object},
+    userpicture : {type : String } ,
+    friendlist : [Object],
+    requestlist : [Object],
+    request_sent_list : [Object],
+    teams : [Object] ,
+    password: {
     type: String,
     required: true,
     minlength: 5,
     maxlength: 1024
   },
-  isAdmin: Boolean
+    isAdmin: Boolean
 });
 
 userSchema.methods.generateAuthToken = function() { 
@@ -33,9 +57,22 @@ userSchema.methods.generateAuthToken = function() {
 
 const User = mongoose.model('Users', userSchema);
 
-function validateUser(user) {
+function validateUserSignup(user) {
+  const schema = Joi.object ( {
+      email: Joi.string().min(5).max(255).required().email(),
+      username : Joi.string().min(5).max(50).required(),
+      fullname: Joi.string().min(5).max(50).required(),
+      phonenumber : Joi.string().min(8).max(14).required(),
+      password: Joi.string().min(5).max(255).required()
+
+  }) .unknown() ;
+
+  return Joi.validate(user, schema);
+}
+
+
+function validateUserLogin(user) {
   const schema = {
-    name: Joi.string().min(5).max(50).required(),
     email: Joi.string().min(5).max(255).required().email(),
     password: Joi.string().min(5).max(255).required()
   };
@@ -44,4 +81,5 @@ function validateUser(user) {
 }
 
 exports.User = User; 
-exports.validate = validateUser;
+exports.validatesignup = validateUserSignup;
+exports.validatelogin = validateUserLogin;

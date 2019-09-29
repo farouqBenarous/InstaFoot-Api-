@@ -12,8 +12,11 @@ module.exports = function() {
   });
   
   winston.add(winston.transports.File, { filename: './LogFiles/logfile.log' });
+/*
   winston.add(winston.transports.MongoDB, { 
     db: config.get('DbString'),
     level: 'info'
   });  
+
+*/
 }
