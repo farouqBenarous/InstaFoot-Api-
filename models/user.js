@@ -80,6 +80,14 @@ function validateUserLogin(user) {
   return Joi.validate(user, schema);
 }
 
+function covert_to_array ( object) {
+    var array =[] ;
+    for (let i=0 ; i<object.length  ; i++)  {
+        array.push(object[i])
+    }
+    return array
+}
 exports.User = User; 
 exports.validatesignup = validateUserSignup;
 exports.validatelogin = validateUserLogin;
+exports.covert_to_array = covert_to_array

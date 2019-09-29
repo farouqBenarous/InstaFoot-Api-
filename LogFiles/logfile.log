@@ -1,0 +1,36 @@
+{"level":"info","message":"Listening on port 5050...","timestamp":"2019-09-23T20:00:49.357Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-23T20:00:50.584Z"}
+{"level":"info","message":"Listening on port 5050...","timestamp":"2019-09-24T20:42:11.558Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T20:42:13.478Z"}
+{"level":"info","message":"Listening on port 5050...","timestamp":"2019-09-24T20:49:56.048Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T20:49:57.390Z"}
+{"level":"info","message":"Listening on port 5050...","timestamp":"2019-09-24T20:52:21.660Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T20:52:22.976Z"}
+{"level":"info","message":"Listening on port 5050...","timestamp":"2019-09-24T21:02:38.742Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T21:02:40.248Z"}
+{"level":"info","message":"Listening on port 5050...","timestamp":"2019-09-24T22:23:47.920Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T22:23:49.358Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T22:48:52.506Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T22:48:54.258Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T22:52:18.746Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T22:52:19.921Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T22:53:56.320Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T22:55:12.780Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T22:56:50.767Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T22:56:51.962Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T23:07:59.296Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T23:08:00.478Z"}
+{"message":"Cannot read property 'email' of null","stack":"TypeError: Cannot read property 'email' of null\n    at router.post (/home/benarousfarouk/Desktop/instafoot(api)/routes/users.js:42:13)\n    at process._tickCallback (internal/process/next_tick.js:68:7)","level":"error","timestamp":"2019-09-24T23:08:06.177Z"}
+{"message":"Cannot read property 'email' of null","stack":"TypeError: Cannot read property 'email' of null\n    at router.post (/home/benarousfarouk/Desktop/instafoot(api)/routes/users.js:42:13)\n    at process._tickCallback (internal/process/next_tick.js:68:7)","level":"error","timestamp":"2019-09-24T23:08:10.966Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T23:10:03.816Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T23:10:05.039Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T23:13:25.631Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T23:13:26.731Z"}
+{"message":"cannot do raw queries on admin in atlas","stack":"MongoError: cannot do raw queries on admin in atlas\n    at Connection.<anonymous> (/home/benarousfarouk/Desktop/instafoot(api)/node_modules/mongoose/node_modules/mongodb/lib/core/connection/pool.js:466:61)\n    at Connection.emit (events.js:189:13)\n    at processMessage (/home/benarousfarouk/Desktop/instafoot(api)/node_modules/mongoose/node_modules/mongodb/lib/core/connection/connection.js:364:10)\n    at TLSSocket.<anonymous> (/home/benarousfarouk/Desktop/instafoot(api)/node_modules/mongoose/node_modules/mongodb/lib/core/connection/connection.js:533:15)\n    at TLSSocket.emit (events.js:189:13)\n    at addChunk (_stream_readable.js:284:12)\n    at readableAddChunk (_stream_readable.js:265:11)\n    at TLSSocket.Readable.push (_stream_readable.js:220:10)\n    at TLSWrap.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)","ok":0,"errmsg":"cannot do raw queries on admin in atlas","code":8000,"codeName":"AtlasError","name":"MongoError","level":"error","timestamp":"2019-09-24T23:13:34.376Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T23:14:03.554Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T23:14:04.799Z"}
+{"message":"cannot do raw queries on admin in atlas","stack":"MongoError: cannot do raw queries on admin in atlas\n    at Connection.<anonymous> (/home/benarousfarouk/Desktop/instafoot(api)/node_modules/mongoose/node_modules/mongodb/lib/core/connection/pool.js:466:61)\n    at Connection.emit (events.js:189:13)\n    at processMessage (/home/benarousfarouk/Desktop/instafoot(api)/node_modules/mongoose/node_modules/mongodb/lib/core/connection/connection.js:364:10)\n    at TLSSocket.<anonymous> (/home/benarousfarouk/Desktop/instafoot(api)/node_modules/mongoose/node_modules/mongodb/lib/core/connection/connection.js:533:15)\n    at TLSSocket.emit (events.js:189:13)\n    at addChunk (_stream_readable.js:284:12)\n    at readableAddChunk (_stream_readable.js:265:11)\n    at TLSSocket.Readable.push (_stream_readable.js:220:10)\n    at TLSWrap.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)","ok":0,"errmsg":"cannot do raw queries on admin in atlas","code":8000,"codeName":"AtlasError","name":"MongoError","level":"error","timestamp":"2019-09-24T23:14:29.178Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-24T23:15:34.163Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-24T23:15:35.364Z"}
+{"level":"info","message":"Listening on port 3000...","timestamp":"2019-09-25T15:44:15.149Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-09-25T15:44:16.553Z"}
