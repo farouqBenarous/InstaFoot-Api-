@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const _ = require('lodash');
-const {User, validatelogin , validatesignup , covert_to_array} = require('../models/user');
+const {User, validatelogin , validatesignup , covert_to_array , exist_or_not} = require('../models/user');
 const Team = require('../models/team')
 const express = require('express');
 const router = express.Router();
@@ -48,7 +48,32 @@ router.get('/:key' , auth , async (req , res) => {
 // get my information (route protected by the auth )  the user have to send a token
 router.get('/me', auth, async (req, res) => {
   const user = await User.findById(req.user._id).select('-password');
-  res.send(user);
+    return res.send(user);
+});
+
+// change information of me {as signup }
+router.put('/me', auth, async (req, res) => {
+    const { error } = validatesignup(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    let exist = await User.findOne({ email: req.body.email });
+    if (exist) return res.status(400).send('email already registered.');
+    exist = await User.findOne({ fullname: req.body.fullname });
+    if (exist) return res.status(400).send('fullname already registered.');
+    exist = await User.findOne({ username: req.body.username });
+    if (exist) return res.status(400).send('username already registered.');
+    exist = await User.findOne({ phonenumber: req.body.phonenumber });
+    if (exist) return res.status(400).send('phonenumber already registered.');
+
+   let current_user = await User.findOne({email : req.body.email})
+    current_user.fullname = req.body.fullname
+    current_user.username = req.body.username
+    current_user.phonenumber = req.body.phonenumber
+    current_user.userpicture = req.body.userpicture
+
+    await current_user.save();
+   res.status(200).send( _.pick(user, ['_id', 'fullname', 'email' ,'username','phonenumber' , 'userpicture']))
+
 });
 
 // signup
@@ -58,13 +83,13 @@ router.post('/signup', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   let exist = await User.findOne({ email: req.body.email });
-  if (exist) return res.status(400).send('User already registered.');
+  if (exist) return res.status(400).send('email already registered.');
   exist = await User.findOne({ fullname: req.body.fullname });
-  if (exist) return res.status(400).send('User already registered.');
+  if (exist) return res.status(400).send('fullname already registered.');
   exist = await User.findOne({ username: req.body.username });
-  if (exist) return res.status(400).send('User already registered.');
+  if (exist) return res.status(400).send('username already registered.');
   exist = await User.findOne({ phonenumber: req.body.phonenumber });
-  if (exist) return res.status(400).send('User already registered.');
+  if (exist) return res.status(400).send('phonenumber already registered.');
 
  // email , username ,  fullname , phonenumber ,  facebook , userpicture , friendlist , teams , password
 
@@ -78,7 +103,7 @@ let user  = new User ({email: req.body.email   , username: req.body.username  , 
   await user.save();
 
   const token = user.generateAuthToken();
-  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'fullname', 'email']));
+    return  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'fullname', 'email']))  ;
 });
 
 // Login
@@ -93,27 +118,54 @@ router.post('/login', async (req, res) => {
   if (!validPassword) return res.status(400).send('Invalid  password.');
 
   const token = user.generateAuthToken();
-  res.send(token);
+    return res.send(token);
 });
 
 // auth with facebook not yet
 router.post('/auth/facebook' , async (req , res) => { res.status(200) } );
 
- // add new friend
-router.post('/friends' , auth ,async (req , res) => {
+ // add or delete  friend  (oop = 0 delete  , opp = 1 add  )  and pass the email in the  body
+router.post('/friends/:opp' , auth ,async (req , res) => {
   if (Object.keys(req.body.email).length === 0) {
-    res.status(400).send(" You Should provide email to add")
+      return res.status(400).send(" You Should provide email to add")
   }
 
-  let user_to_add = await User.findOne({email: req.body.email} ,['email','fullname','username' ,'phonenumber'])
-  let current_user = await User.findOne({_id : req.user._id} ,['email','fullname','username' ,'phonenumber'] )
+  if ( req.params.opp == 1) {
+      let user_to_add = await User.findOne({email: req.body.email} ,['email','fullname','username' ,'phonenumber' ,  'userpicture'])
+      let current_user = await User.findOne({_id : req.user._id} ,['email','fullname','username' ,'phonenumber' ,'friendlist' , 'userpicture' ,'request_sent_list'] )
+      console.log('opp' +    req.params.opp)
 
-  var task = Fawn.Task();
-  task.update("users",{email : current_user.email},{ $push: { request_sent_list: user_to_add } })
-      .update("users",{email: user_to_add.email},{ $push: { requestlist: current_user } })
-      .run()
-      .then( function (results) {res.status(200).send('request sent to ' + req.body.email)})
-      .catch( function (err)  {res.status(500).send(err)});
+      let exist = exist_or_not(current_user.friendlist  , user_to_add.email )
+      if (exist) {return res.status(400).send (' The user is already your friend ')}
+
+      exist = exist_or_not(current_user.request_sent_list  , user_to_add.email )
+      if (exist) {return res.status(400).send ('request already sent to the user')}
+
+      var task = Fawn.Task();
+      task.update("users",{email : current_user.email},{ $push: { request_sent_list: user_to_add } })
+          .update("users",{email: user_to_add.email},{ $push: { requestlist: {email : current_user.email , fullname : current_user.fullname ,
+                      username : current_user.username , phonenumber : current_user.phonenumber ,  userpicture :  current_user.userpicture } } } )
+          .run()
+          .then( function (results) {return res.status(200).send('request sent to ' + req.body.email)})
+          .catch( function (err)  {return res.status(500).send(err)});
+  }
+  if (req.params.opp == 0 ) {
+      let user_to_delete = await User.findOne({email: req.body.email} ,['email','fullname'])
+      let current_user = await User.findOne({_id : req.user._id} ,['email','fullname','username' ,'phonenumber' ,'friendlist' , 'userpicture'] )
+
+      let exist = exist_or_not(current_user.friendlist , user_to_delete .email)
+      if (!exist) {return res.status(400).send (' This user is not your friend ')}
+
+      var task = Fawn.Task();
+      task.update("users",{email : current_user.email},{ $pull: { friendlist:  { email : user_to_delete.email} } })
+          .update("users",{email: user_to_delete.email},{ $pull: { friendlist: {email : current_user.email  } } })
+          .run()
+          .then( function (results) { return res.status(200).send( user_to_delete.email + ' user deleted succesfuly ' + results)})
+          .catch( function (err)  { return res.status(500).send(err)});
+  }
+
+
+
 });
 
 // accept the request or decline (oop = 0 decline  , opp = 1 accept )  and pass the email in the  body
@@ -135,8 +187,8 @@ router.put('/friends/:opp' , auth , async  (req , res) => {
      task.update("users",{email : current_user.email},{ $pull: { requestlist: {email : user_requesting.email}  } })
          .update("users",{email: user_requesting.email},{ $pull: { request_sent_list: {email : current_user.email }  } })
          .run()
-         .then( function (results)  {res.status(200).send('request of ' +user_requesting.fullname +' declined sucessfuly')})
-         .catch( function (err)  {res.status(500).send(err)});
+         .then( function (results)  {return res.status(200).send('request of ' +user_requesting.fullname +' declined sucessfuly')})
+         .catch( function (err)  {return res.status(500).send(err)});
    }
 // accept path
    if (req.params.opp == 1) {
@@ -150,9 +202,12 @@ router.put('/friends/:opp' , auth , async  (req , res) => {
          .update('users' , {email : current_user.email},{ $push: { friendlist: user_requesting } })
          .update('users',{email : user_requesting.email} , {$push : {friendlist : current_user}})
          .run()
-         .then( function (results)  {res.status(200).send('request of ' +user_requesting.fullname +' accepted sucessfuly')})
-         .catch( function (err)  {res.status(500).send(err)});
+         .then( function (results)  { return res.status(200).send('request of ' +user_requesting.fullname +' accepted sucessfuly')})
+         .catch( function (err)  { return res.status(500).send(err)});
    }
+
+    return res.status(404).send('user not found or internal server error ')
+
 
 } );
 
@@ -179,9 +234,22 @@ router.get('/friends/:key' , auth , async (req , res) => {
    exist = await friend_list.find (   obj =>  obj.phonenumber === req.params.key )
    if (exist) { return res.status(200).send( {email : exist.email , fullname : exist.fullname , username : exist.username , phonenumber : exist.phonenumber , userpicture : exist.userpicture })}
 
-  res.status(404).send('friend not  found ')
+  return  res.status(404).send('friend not  found ')
 
 } ) ;
+
+//show my requestlist
+router.get('/requestlist' , auth , async (req , res) => {
+    let current_user = await User.findOne( { _id :  req.user._id} , ['requestlist' , 'email'] )
+    res.status(200).send(current_user.requestlist)
+});
+
+//show my request_sent_list
+router.get('/request-sent-list' , auth , async (req , res) => {
+    let current_user = await User.findOne( { _id :  req.user._id} , ['request_sent_list' , 'email'] )
+    res.status(200).send(current_user.request_sent_list)
+});
+
 
 
 module.exports = router

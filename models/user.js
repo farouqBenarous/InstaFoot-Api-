@@ -87,7 +87,15 @@ function covert_to_array ( object) {
     }
     return array
 }
+
+function exist_or_not ( list , value) {
+    let newlist =  covert_to_array(list) ;
+    let exist  = newlist.find( obj => obj.email === value)
+    if(exist) {return true}
+    else {return  false}
+}
 exports.User = User; 
 exports.validatesignup = validateUserSignup;
 exports.validatelogin = validateUserLogin;
 exports.covert_to_array = covert_to_array
+exports.exist_or_not = exist_or_not
