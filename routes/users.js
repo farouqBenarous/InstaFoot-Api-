@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const _ = require('lodash');
-const {User, validatelogin , validatesignup , covert_to_array , exist_or_not} = require('../models/user');
+const {User, validatelogin , validatesignup , covert_to_array , exist_or_not ,validateChangeUser ,delete_obj } = require('../models/user');
 const Team = require('../models/team')
 const express = require('express');
 const router = express.Router();
@@ -15,15 +15,14 @@ Fawn.init(mongoose);
 
 
 
-
 //get all the users
 router.get('/' , auth , async (req , res) => {
     let users  = await User.find ({}  , ['username','fullname','phonenumber','email','userpicture']) ;
     res.status(200).send(users)
 } );
 
-// get a specefic  friend by given key
-router.get('/:key' , auth , async (req , res) => {
+// get a specefic  user by given key
+router.get('/users/:key' , auth , async (req , res) => {
     let exist ;
     if (Object.keys(req.params).length === 0) {
         res.status(400).send(" You Should provide Search key")
@@ -47,32 +46,33 @@ router.get('/:key' , auth , async (req , res) => {
 
 // get my information (route protected by the auth )  the user have to send a token
 router.get('/me', auth, async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
+    const user = await User.findById(req.user._id).select('-password');
     return res.send(user);
 });
 
 // change information of me {as signup }
 router.put('/me', auth, async (req, res) => {
-    const { error } = validatesignup(req.body);
+    const { error } = validateChangeUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let exist = await User.findOne({ email: req.body.email });
-    if (exist) return res.status(400).send('email already registered.');
-    exist = await User.findOne({ fullname: req.body.fullname });
-    if (exist) return res.status(400).send('fullname already registered.');
-    exist = await User.findOne({ username: req.body.username });
-    if (exist) return res.status(400).send('username already registered.');
-    exist = await User.findOne({ phonenumber: req.body.phonenumber });
-    if (exist) return res.status(400).send('phonenumber already registered.');
+    let users = await User.find({}, ['email' , 'fullname','username' ,'phonenumber'])
 
-   let current_user = await User.findOne({email : req.body.email})
+    users =  await delete_obj (users , req.user._id )
+    let exist  = users.find( obj => obj.fullname == req.body.fullname)
+    if (exist) {return res.status(400).send('fullname already registered.')}
+    exist  = users.find( obj => obj.username == req.body.username)
+    if (exist) {return res.status(400).send('username already registered.')}
+    exist  = users.find( obj => obj.phonenumber == req.body.phonenumber)
+    if (exist) {return res.status(400).send('phonenumber already registered.')}
+
+    let current_user = await User.findOne({_id : req.user._id})
     current_user.fullname = req.body.fullname
     current_user.username = req.body.username
     current_user.phonenumber = req.body.phonenumber
     current_user.userpicture = req.body.userpicture
 
     await current_user.save();
-   res.status(200).send( _.pick(user, ['_id', 'fullname', 'email' ,'username','phonenumber' , 'userpicture']))
+    res.status(200).send( _.pick(current_user, ['_id', 'fullname', 'email' ,'username','phonenumber' , 'userpicture']))
 
 });
 
@@ -244,12 +244,29 @@ router.get('/requestlist' , auth , async (req , res) => {
     res.status(200).send(current_user.requestlist)
 });
 
+
 //show my request_sent_list
 router.get('/request-sent-list' , auth , async (req , res) => {
     let current_user = await User.findOne( { _id :  req.user._id} , ['request_sent_list' , 'email'] )
     res.status(200).send(current_user.request_sent_list)
 });
 
+// cancel a sent request  {email }
+router.delete('/request-sent-list/:key' , auth , async (req , res) => {
+    if (Object.keys(req.body.email).length === 0) {
+        return res.status(400).send(" You Should provide email to do this operation ")
+    }
+
+    let current_user = await User.findOne( { _id :  req.user._id} ,['email'])
+
+    var task = Fawn.Task();
+    task.update("users",{email : current_user.email},{ $pull: { request_sent_list: {email : req.body.email}  } })
+        .update("users",{email: user_requesting.email},{ $pull: { requestlist: {email : current_user.email }  } })
+        .run()
+        .then( function (results)  {return res.status(200).send("request canceled" ) })
+        .catch( function (err)  {return res.status(500).send(err)});
+
+});
 
 
 module.exports = router
