@@ -7,13 +7,11 @@ const {User, validatelogin , validatesignup , covert_to_array , exist_or_not ,va
 const Team = require('../models/team')
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Fawn = require('fawn')
-var mongoose = require('mongoose');
 mongoose.connect(config.get('DbString'))
-Fawn.init(mongoose);
-
-
-
+var tmp_collect = 'tmp_collect_for_users_app'
+Fawn.init(mongoose ,tmp_collect );
 
 //get all the users
 router.get('/' , auth , async (req , res) => {
@@ -108,6 +106,12 @@ let user  = new User ({email: req.body.email   , username: req.body.username  , 
 
 // Login
 router.post('/login', async (req, res) => {
+    if ( !("email" in req.body) || Object.keys(req.body.email).length == 0) {
+        return res.status(400).send(" You Should provide email to do this operation ")
+    }
+    if ( !("password" in req.body) || Object.keys(req.body.password).length == 0) {
+        return res.status(400).send(" You Should provide email to do this operation ")
+    }
   const { error } = validatelogin(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -126,28 +130,27 @@ router.post('/auth/facebook' , async (req , res) => { res.status(200) } );
 
  // add or delete  friend  (oop = 0 delete  , opp = 1 add  )  and pass the email in the  body
 router.post('/friends/:opp' , auth ,async (req , res) => {
-  if (Object.keys(req.body.email).length === 0) {
-      return res.status(400).send(" You Should provide email to add")
-  }
+    if ( !("email" in req.body) || Object.keys(req.body.email).length == 0) {
+        return res.status(400).send(" You Should provide email to do this operation ")
+    }
 
   if ( req.params.opp == 1) {
+      //check if the user exist
       let user_to_add = await User.findOne({email: req.body.email} ,['email','fullname','username' ,'phonenumber' ,  'userpicture'])
       let current_user = await User.findOne({_id : req.user._id} ,['email','fullname','username' ,'phonenumber' ,'friendlist' , 'userpicture' ,'request_sent_list'] )
-      console.log('opp' +    req.params.opp)
 
       let exist = exist_or_not(current_user.friendlist  , user_to_add.email )
       if (exist) {return res.status(400).send (' The user is already your friend ')}
 
       exist = exist_or_not(current_user.request_sent_list  , user_to_add.email )
       if (exist) {return res.status(400).send ('request already sent to the user')}
-
       var task = Fawn.Task();
       task.update("users",{email : current_user.email},{ $push: { request_sent_list: user_to_add } })
           .update("users",{email: user_to_add.email},{ $push: { requestlist: {email : current_user.email , fullname : current_user.fullname ,
                       username : current_user.username , phonenumber : current_user.phonenumber ,  userpicture :  current_user.userpicture } } } )
-          .run()
+          .run({useMongoose: true})
           .then( function (results) {return res.status(200).send('request sent to ' + req.body.email)})
-          .catch( function (err)  {return res.status(500).send(err)});
+          .catch( function (err)  {return res.status(500).send("error  : " + err)});
   }
   if (req.params.opp == 0 ) {
       let user_to_delete = await User.findOne({email: req.body.email} ,['email','fullname'])
@@ -170,9 +173,9 @@ router.post('/friends/:opp' , auth ,async (req , res) => {
 
 // accept the request or decline (oop = 0 decline  , opp = 1 accept )  and pass the email in the  body
 router.put('/friends/:opp' , auth , async  (req , res) => {
-  if (Object.keys(req.body.email).length === 0) {
-   return res.status(400).send(" You Should provide email to do this operation ")
-  }
+    if ( !("email" in req.body) || Object.keys(req.body.email).length == 0) {
+        return res.status(400).send(" You Should provide email to do this operation ")
+    }
 
   let user_requesting = await User.findOne({email: req.body.email} ,['email','fullname','username' ,'phonenumber'])
   let current_user = await User.findOne({_id : req.user._id} ,['email','fullname','username' ,'phonenumber','requestlist'] )
@@ -244,31 +247,33 @@ router.get('/requestlist' , auth , async (req , res) => {
     res.status(200).send(current_user.requestlist)
 });
 
-
 //show my request_sent_list
 router.get('/request-sent-list' , auth , async (req , res) => {
+
     let current_user = await User.findOne( { _id :  req.user._id} , ['request_sent_list' , 'email'] )
+    console.log(current_user)
     res.status(200).send(current_user.request_sent_list)
 });
 
 // cancel a sent request  {email }
-router.delete('/request-sent-list/:key' , auth , async (req , res) => {
-    if (Object.keys(req.body.email).length === 0) {
+router.delete('/request-sent-list' , auth , async (req , res) => {
+
+    if ( !("email" in req.body) || Object.keys(req.body.email).length == 0) {
         return res.status(400).send(" You Should provide email to do this operation ")
     }
 
-    let current_user = await User.findOne( { _id :  req.user._id} ,['email'])
+    let current_user = await User.findOne( { _id :  req.user._id} ,['email' ,'request_sent_list'])
+
+    let exist = exist_or_not(current_user.request_sent_list , req.body.email)
+    if (!exist) {return res.status(400).send (' you have no sent request to this user ')}
 
     var task = Fawn.Task();
     task.update("users",{email : current_user.email},{ $pull: { request_sent_list: {email : req.body.email}  } })
-        .update("users",{email: user_requesting.email},{ $pull: { requestlist: {email : current_user.email }  } })
+        .update("users",{email: req.body.email},{ $pull: { requestlist: {email : current_user.email }  } })
         .run()
         .then( function (results)  {return res.status(200).send("request canceled" ) })
         .catch( function (err)  {return res.status(500).send(err)});
 
 });
 
-
 module.exports = router
-
-

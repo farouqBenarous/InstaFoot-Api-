@@ -4,7 +4,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const  _ = require('lodash')
 
-//, id_user , email , vu , timestamp
+//, id_user , email , vu , timestamp , text
 const messageSchema = new mongoose.Schema({
     email_user: {
         type: String,
@@ -28,7 +28,7 @@ const messageSchema = new mongoose.Schema({
 
 });
 
-const message = mongoose.model('messages', userSchema);
+const Message = mongoose.model('messages', messageSchema);
 
 
 function Validatemessage(messages) {
@@ -43,5 +43,5 @@ function Validatemessage(messages) {
 }
 
 
-exports.message = message;
+exports.Message = Message;
 exports.Validatemessage = Validatemessage

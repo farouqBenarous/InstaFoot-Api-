@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
     requestlist : [Object],
     request_sent_list : [Object],
     teams : [Object] ,
-    conversation : [Object] ,
+    chat : [Object] ,
     password: {
     type: String,
     required: true,
@@ -100,9 +100,9 @@ function covert_to_array ( object) {
     return array
 }
 
-function exist_or_not ( list , value, type) {
+function exist_or_not ( list , value) {
     let newlist =  covert_to_array(list) ;
-        let exist  = newlist.find( obj => obj.type == value)
+        let exist  = newlist.find( obj => obj.email == value)
         if(exist) {return true}
     else {return  false}
 }
