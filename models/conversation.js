@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const  _ = require('lodash')
-
 // Conversation (_id_conv , _id_User1 , _id_User2 , email_user1 , email_user2 , [messages] , time=lastmessageTime  )
 const conversationSchema = new mongoose.Schema({
     email_user_1: {

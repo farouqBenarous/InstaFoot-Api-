@@ -1,10 +1,8 @@
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const Joi = require('joi');
+const Joi = require('joi')
 const mongoose = require('mongoose');
 const  _ = require('lodash')
-
-//, id_user , email , vu , timestamp , text
 const messageSchema = new mongoose.Schema({
     email_user: {
         type: String,
@@ -33,15 +31,31 @@ const Message = mongoose.model('messages', messageSchema);
 
 function Validatemessage(messages) {
     const schema = Joi.object ( {
-        email_user: Joi.string().min(5).max(255).required().email().required,
-        vu  : Joi.boolean().max(2),
+        email_user: Joi.string().min(5).max(255).required().email(),
+        vu  : Joi.string().min(1).max(2),
         id_user: Joi.string().min(1).max(255).required(),
-        timestamp : Joi.date().required(),
-        text: Joi.string().min(1).max(255).required()
+        text: Joi.string().min(1).max(255).required(),
+        timestamp : Joi.string().required()
     }) .unknown() ;
     return Joi.validate(messages, schema);
 }
 
 
+function exist_or_not_message ( list , value) {
+    let newlist =  covert_to_array(list) ;
+    let exist  = newlist.find( obj => obj.email_user_2 == value)
+    if(exist) {return true}
+    else {return  false}
+}
+
+function covert_to_array ( object) {
+    var array =[] ;
+    for (let i=0 ; i<object.length  ; i++)  {
+        array.push(object[i])
+    }
+    return array
+}
+
 exports.Message = Message;
 exports.Validatemessage = Validatemessage
+exports.exist_or_not_message = exist_or_not_message

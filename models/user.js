@@ -102,9 +102,9 @@ function covert_to_array ( object) {
 
 function exist_or_not ( list , value) {
     let newlist =  covert_to_array(list) ;
-        let exist  = newlist.find( obj => obj.email == value)
+       let exist  = newlist.find( obj => obj.email == value)
         if(exist) {return true}
-    else {return  false}
+        else {return  false}
 }
 
 function delete_obj (array , value) {

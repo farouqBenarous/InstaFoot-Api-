@@ -13,8 +13,10 @@ mongoose.connect(config.get('DbString'))
 var tmp_collect = 'tmp_collect_for_users_app'
 Fawn.init(mongoose ,tmp_collect );
 
+
 //get all the users
 router.get('/' , auth , async (req , res) => {
+
     let users  = await User.find ({}  , ['username','fullname','phonenumber','email','userpicture']) ;
     res.status(200).send(users)
 } );
@@ -50,6 +52,7 @@ router.get('/me', auth, async (req, res) => {
 
 // change information of me {as signup }
 router.put('/me', auth, async (req, res) => {
+
     const { error } = validateChangeUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -251,7 +254,6 @@ router.get('/requestlist' , auth , async (req , res) => {
 router.get('/request-sent-list' , auth , async (req , res) => {
 
     let current_user = await User.findOne( { _id :  req.user._id} , ['request_sent_list' , 'email'] )
-    console.log(current_user)
     res.status(200).send(current_user.request_sent_list)
 });
 
@@ -275,5 +277,6 @@ router.delete('/request-sent-list' , auth , async (req , res) => {
         .catch( function (err)  {return res.status(500).send(err)});
 
 });
+
 
 module.exports = router

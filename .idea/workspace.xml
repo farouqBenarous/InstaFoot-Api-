@@ -1,14 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="85" />
-    <option name="width" value="1356" />
-    <option name="height" value="531" />
+  <component name="ChangeListManager">
+    <list default="true" id="ecc94145-9922-4b80-8da9-6617997f3069" name="Default Changelist" comment="some intial code to start with , it has just the  auth of users and itial configuration and middlewares">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/conversation.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/conversation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/message.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/message.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/chats.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/chats.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/startup/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/startup/routes.js" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="faroukcr7 &lt;farouk.benarous26@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1RUcQ8dxW8lLuv0D9Wqj54gt2b7" />
   <component name="PropertiesComponent">
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.folding" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="NodeJSConfigurationType" path-to-js-file="index.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <configuration name="index.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="index.js" working-dir="$PROJECT_DIR$">
+      <envs pass-parent-envs="false">
+        <env name="jwtPrivateKey" value="vidly_jwtPrivateKey" />
+        <env name="DbString" value="mongodb+srv://farouk:5hrvlvrurk45@cluster0-9qh0l.mongodb.net/InstaFoot" />
+        <env name="Port" value="6060" />
+      </envs>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ecc94145-9922-4b80-8da9-6617997f3069" name="Default Changelist" comment="" />
+      <created>1569020006120</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1569020006120</updated>
+      <workItem from="1569020007929" duration="4915000" />
+      <workItem from="1569080070639" duration="2494000" />
+      <workItem from="1569088786368" duration="2231000" />
+      <workItem from="1569091634609" duration="5194000" />
+      <workItem from="1569098679451" duration="765000" />
+      <workItem from="1569108910793" duration="5600000" />
+      <workItem from="1569177536724" duration="2283000" />
+      <workItem from="1569260635521" duration="403000" />
+      <workItem from="1569261177448" duration="3507000" />
+      <workItem from="1569327538962" duration="2980000" />
+      <workItem from="1569357574885" duration="1701000" />
+      <workItem from="1569359366017" duration="4305000" />
+      <workItem from="1569364525662" duration="308000" />
+      <workItem from="1569365180137" duration="1670000" />
+      <workItem from="1569416216245" duration="702000" />
+      <workItem from="1569426720637" duration="3778000" />
+      <workItem from="1569461660832" duration="1825000" />
+      <workItem from="1569516747748" duration="3927000" />
+      <workItem from="1569522119004" duration="8378000" />
+      <workItem from="1569544568674" duration="5624000" />
+      <workItem from="1569612809213" duration="5141000" />
+      <workItem from="1569622186747" duration="539000" />
+      <workItem from="1569622812592" duration="4053000" />
+      <workItem from="1569634743036" duration="3574000" />
+      <workItem from="1569639542751" duration="1390000" />
+      <workItem from="1569696292306" duration="2693000" />
+      <workItem from="1569702827759" duration="1085000" />
+      <workItem from="1569704117900" duration="10955000" />
+      <workItem from="1569724713833" duration="67000" />
+      <workItem from="1569725110321" duration="4828000" />
+      <workItem from="1569792471025" duration="6197000" />
+      <workItem from="1569805593888" duration="6608000" />
+      <workItem from="1569817191967" duration="5000" />
+      <workItem from="1569851856092" duration="1661000" />
+      <workItem from="1569874255340" duration="1220000" />
+      <workItem from="1569882925378" duration="2728000" />
+      <workItem from="1569910011375" duration="13290000" />
+      <workItem from="1569974110092" duration="97000" />
+      <workItem from="1570012105518" duration="14102000" />
+      <workItem from="1570098572493" duration="9487000" />
+      <workItem from="1570186347996" duration="3433000" />
+    </task>
+    <task id="LOCAL-00001" summary="add friend functionality (send request  , decline it , accept it ... )&#10;some changes in the auth too">
+      <created>1569715479704</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1569715479704</updated>
+    </task>
+    <task id="LOCAL-00002" summary="search user  get users , search friend , get friends">
+      <created>1569730068189</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1569730068189</updated>
+    </task>
+    <task id="LOCAL-00003" summary="request-sent list&#10;request list &#10;change me &#10;fix some bugs in add user">
+      <created>1569798620294</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1569798620294</updated>
+    </task>
+    <task id="LOCAL-00004" summary="started implementing the chat feaure">
+      <created>1569885633812</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1569885633812</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix some bugs in the users route and db">
+      <created>1569943354907</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1569943354907</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+      <is-preview-enabled value="true" />
+    </todo-panel>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add friend functionality (send request  , decline it , accept it ... )&#10;some changes in the auth too" />
+    <MESSAGE value="search user  get users , search friend , get friends" />
+    <MESSAGE value="request-sent list&#10;request list &#10;change me &#10;fix some bugs in add user" />
+    <MESSAGE value="started implementing the chat feaure" />
+    <MESSAGE value="fix some bugs in the users route and db" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix some bugs in the users route and db" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand>
+      <path>
+        <item name="instafoot(api)" type="b2602c69:ProjectViewProjectNode" />
+        <item name="instafoot(api)" type="462c0819:PsiDirectoryNode" />
+      </path>
+    </expand>
+    <select />
   </component>
 </project>
