@@ -76,10 +76,32 @@ router.post( '/' , auth ,async (req , res) => {
 
 
 // get all my conversations
-router.get('/' , auth , async (req, res) => {});
+router.get('/' , auth , async (req, res) => {
+    const current_user = await  User.findOne({_id : req.user._id }, ['email','chat']) ;
 
-// delete a message
-router.delete('/' , auth , async (req, res) => {});
+    if (current_user.chat.length < 1 || current_user.chat == undefined) {
+        return res.status(404).send('no conversation founded')
+    }
+    res.send(current_user.chat)
+});
+
+// get  a messages of a user
+router.get('/messages' , auth , async (req, res) => {
+    if ( !("email" in req.body) || Object.keys(req.body.email).length == 0) {
+        return res.status(400).send(" You Should provide email to do this operation ")
+    }
+
+    let current_user = await User.findOne( {_id : req.user._id} , ['chat'] )
+
+    if (current_user.chat.length <1 || current_user.chat == undefined) {return res.status(404).send('no Chats')}
+    let  chat =  covert_to_array(current_user.chat) ;
+    let exist  = chat.find( obj => obj.email_user_2 == req.body.email)
+
+    if (!exist) { return res.status(404).send('no messages with this user')}
+
+    res.send(exist)
+
+});
 
 // delete a coversation
 router.delete('/' , auth , async (req, res) => {});
