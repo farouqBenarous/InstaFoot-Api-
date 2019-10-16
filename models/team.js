@@ -36,21 +36,40 @@ function Validateteam(team) {
         admin  : Joi.string().min(4).max(50).required(),
         players: Joi.required(),
         number_players: Joi.string().min(1).max(20).required(),
-        match_played : Joi.string() ,
         image_team : Joi.string() ,
         score : Joi.string() ,
     }) .unknown() ;
     return Joi.validate(team, schema);
 }
 
+function Validatemessage_Team(messages) {
+    const schema = Joi.object ( {
+        email_user: Joi.string().min(5).max(255).required().email(),
+        vu  : Joi.string().min(1).max(2),
+        id_user: Joi.string().min(1).max(255).required(),
+        text: Joi.string().min(1).max(255).required(),
+        timestamp : Joi.string().required()
+    }) .unknown() ;
+    return Joi.validate(messages, schema);
+}
 
 function exist_or_not_team ( list , value) {
     let newlist =  covert_to_array(list) ;
-    let exist  = newlist.find( obj => obj.eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee == value)
+    let exist  = newlist.find( obj => obj.email == value)
     if(exist) {return true}
     else {return  false}
 }
 
+function covert_to_array ( object) {
+    var array =[] ;
+    for (let i=0 ; i<object.length  ; i++)  {
+        array.push(object[i])
+    }
+    return array
+}
+
+
 module.exports.Team = Team ;
 module.exports.exist_or_not_team = exist_or_not_team
 module.exports.Validateteam = Validateteam
+module.exports.Validatemessage_Team = Validatemessage_Team

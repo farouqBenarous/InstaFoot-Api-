@@ -15,7 +15,7 @@ Fawn.init(mongoose ,tmp_collect );
 
 
 //get all the users
-router.get('/' , auth , async (req , res) => {
+router.get('/'  ,auth ,async (req , res) => {
 
     let users  = await User.find ({}  , ['username','fullname','phonenumber','email','userpicture']) ;
     res.status(200).send(users)
