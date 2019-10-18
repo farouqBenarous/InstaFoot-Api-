@@ -161,5 +161,38 @@ router.post('/users' , auth , async  (req , res ) =>  {
     res.status(200).send('the user is added to the team')
 })
 
+// Delete someone form a team   {email and name of the team }
+router.delete('/users' , auth , async  (req , res ) =>  {
+    if ( _.isEmpty(req.body.name ) ) {return res.status(400).send(' you should send name  of the team ')}
+    if ( _.isEmpty(req.body.email ) ) {return res.status(400).send(' you should send email of the user ')}
+
+    let team_exist = await Team.findOne({name : req.body.name} )
+    let current_user = await  User.findOne ({_id : req.user._id})
+    let user_to_add = await  User.findOne({email : req.body.email })
+
+    if (_.isEmpty(user_to_add)) {
+        return res.status(404).send('The user does not exist')
+    }
+
+    if (_.isEmpty(team_exist)) {
+        return res.status(404).send('The team does not exist')
+    }
+
+    if (current_user.email !== team_exist.admin) {
+        return res.status(400).send('Only admin can Delte  users to a team')
+    }
+    console.log('user to add ' + user_to_add.email)
+    console.log('user to add ' + user_to_add.email)
+
+    let exist = exist_or_not_team (team_exist.players , user_to_add.email)
+    if (!exist) {
+        return res.status(400).send('The user Does not exist in the team ')
+    }
+
+    await Team.updateOne({name : team_exist.name} , {$pull :{ players : { email : user_to_add.email}} })
+    await User.updateOne ({email : user_to_add.email} , {$pull : {teams : team_exist}})
+    res.status(200).send('The user is deleted')
+})
+
 
 module.exports = router
