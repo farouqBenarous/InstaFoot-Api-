@@ -95,8 +95,9 @@ router.post('/signup', async (req, res) => {
  // email , username ,  fullname , phonenumber ,  facebook , userpicture , friendlist , teams , password
 
 let user  = new User ({email: req.body.email   , username: req.body.username  ,  fullname: req.body.fullname  ,
-  phonenumber:req.body.phonenumber  ,  facebook: req.body.facebook  , userpicture : 'not defined yet' ,
-  friendlist: req.body.friendlist  , teams: req.body.teams   , password : req.body.password   })
+  phonenumber:req.body.phonenumber , IDcarduri : req.body.IDcarduri , birthdate : req.body.birthdate, gender : req.body.gender ,facebook: req.body.facebook ,google: req.body.google
+    ,instagram: req.body.instagram  , userpicture : '' ,
+  friendlist: [] , requestlist : [],request_sent_list : [] ,  teams: [],chat : [] , password : req.body.password   })
 
   const salt = await bcrypt.genSalt(10);
 

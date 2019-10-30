@@ -36,7 +36,12 @@ const userSchema = new mongoose.Schema({
         maxlength: 14 ,
         unique : true
 },
+    IDcarduri : String ,
+    birthdate : Date ,
+    gender : {type : String , enum : ['male' , 'female']} ,
     facebook : { type :  Object},
+    google : { type :  Object},
+    instagram : { type :  Object},
     userpicture : {type : String } ,
     friendlist : [Object],
     requestlist : [Object],
@@ -46,7 +51,7 @@ const userSchema = new mongoose.Schema({
     password: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 8,
     maxlength: 1024
   },
 });
@@ -64,6 +69,12 @@ function validateUserSignup(user) {
       username : Joi.string().min(5).max(50).required(),
       fullname: Joi.string().min(5).max(50).required(),
       phonenumber : Joi.string().min(8).max(14).required(),
+      IDcarduri : Joi.string().required(),
+      birthdate : Joi.string().required(),
+      facebook : Joi.string().required(),
+      google : Joi.string().required(),
+      instagram : Joi.string().required(),
+      gender : Joi.string().required(),
       password: Joi.string().min(5).max(255).required()
 
   }) .unknown() ;
@@ -116,8 +127,10 @@ function delete_obj (array , value) {
 
     return new_array
 }
+function validate_ID(uri ) {}
 
-exports.User = User; 
+
+exports.User = User;
 exports.validatesignup = validateUserSignup;
 exports.validatelogin = validateUserLogin;
 exports.covert_to_array = covert_to_array
