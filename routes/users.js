@@ -175,6 +175,7 @@ router.post('/friends/:opp' , auth ,async (req , res) => {
 
 });
 
+
 // accept the request or decline (oop = 0 decline  , opp = 1 accept )  and pass the email in the  body
 router.put('/friends/:opp' , auth , async  (req , res) => {
     if ( !("email" in req.body) || Object.keys(req.body.email).length == 0) {

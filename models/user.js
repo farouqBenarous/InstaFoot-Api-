@@ -69,12 +69,8 @@ function validateUserSignup(user) {
       username : Joi.string().min(5).max(50).required(),
       fullname: Joi.string().min(5).max(50).required(),
       phonenumber : Joi.string().min(8).max(14).required(),
-      IDcarduri : Joi.string().required(),
-      birthdate : Joi.string().required(),
-      facebook : Joi.string().required(),
-      google : Joi.string().required(),
-      instagram : Joi.string().required(),
-      gender : Joi.string().required(),
+      birthdate : Joi.string().required().optional(),
+      gender : Joi.string().required().optional(),
       password: Joi.string().min(5).max(255).required()
 
   }) .unknown() ;
